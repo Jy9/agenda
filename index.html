@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>日程</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="mstyle.css" />
+	</head>
+	<body>
+		<div id="app">
+			<header>
+				<div class="header-name">2019光能杯</div>
+			</header>
+
+			<div class="content">
+				<img class="banner" :src="banner">
+				<img class="mbanner" :src="mbanner">
+
+				<div class="agenda">
+					<div class="agenda-item" :class="{active:item.type=='title'}" v-for="(item,index) in agenda" :key="index">
+						<p class="sub" v-if="item.type=='sub'" v-html="item.content"></p>
+						<p class="title" v-if="item.type=='title'" v-html="item.content"></p>
+						<p class="subtitle" v-if="item.type=='subtitle'" v-html="item.content"></p>
+						<div class="agendacon" v-if="item.type=='content'">
+							<p class="agendacon-time">{{item.time}}</p>
+							<div class="agendacon-list">
+								<div class="agendacon-item" v-for="(item1,index1) in item.content" :key="index1">
+									<p v-html="item1.key + ' ：' "></p>
+									<p v-html="item1.val"></p>
+								</div>
+								<p class="agendacon-pdf" v-if="item.pdf" @click="openWin(item.pdf)">点击查看PDF</p>
+							</div>
+						</div>
+						<img @click="setPosition('top',index)" v-if="isSet" class="topagenda" src="icon/top.png">
+						<img @click="setPosition('bottom',index)" v-if="isSet" class="bottomagenda" src="icon/top.png">
+						<img @click="addPdf(index)" v-if="isSet" class="pdfagenda" src="icon/pdf.png">
+						<img @click="setItem(index)" v-if="isSet" class="setagenda" src="icon/set.png" >
+					</div>
+				</div>
+
+				<div class="btns" v-if="isSet">
+					<p @click="addItem('title')">添加标题</p>
+					<p @click="addItem('subtitle')">添加小标题</p>
+					<p @click="addItem('sub')">添加介绍</p>
+					<p @click="addItem('content')">添加日程</p>
+				</div>
+
+				<div class="addcon" v-show="addtype">
+					<div class="addcon-con">
+
+						<textarea v-show="addtype!='content'" class="addcon-txt" v-model="agendaTxt" :placeholder="addtype=='title'?'添加标题':addtype=='subtitle'?'添加小标题':addtype=='sub'?'添加介绍':''"></textarea>
+						<div class="addcon-item" v-show="addtype=='content'">
+							<div class="additem1">
+								<p class="addkey">日程时间</p>：
+								<div class="addval">
+									<input class="addval-time" v-model="agendaTime[0]" type="time">
+									<span>-</span>
+									<input class="addval-time" v-model="agendaTime[1]" type="time">
+								</div>
+							</div>
+							<div class="additem" v-for="(item,index) in agendaList" :key="index">
+								<input class="addkey" v-model="item.key" placeholder="项目名称" type="text">：
+								<textarea class="addval1" v-model="item.val" placeholder="项目内容"></textarea>
+							</div>
+
+							<img @click="addVal" class="add" src="icon/add.png">
+						</div>
+
+						<div class="btns">
+							<p @click="addItem(addtype,true,setIndex)">{{(setIndex && addtype != 'addpdf')?'修改':'添加'}}</p>
+							<p @click="addItem(false)">取消</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="https://cdn.staticfile.org/vue/2.6.10/vue.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="script.js" type="text/javascript" charset="utf-8"></script>

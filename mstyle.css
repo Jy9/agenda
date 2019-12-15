@@ -1,0 +1,25 @@
+@media screen and (max-width: 768px) {
+	header{
+		top:auto;
+		bottom:0px;
+	}
+	body{
+		padding-bottom:40px;
+	}
+	.content{
+		margin:0px;
+	}
+	.banner{
+		display: none;
+	}
+	.mbanner{
+		display: block;
+	}
+	.btns>p{
+		width: 40%;
+		margin:5px 5%;
+	}
+	.agendacon-time,.agendacon-list{
+		width: 100%;
+	}
+}
